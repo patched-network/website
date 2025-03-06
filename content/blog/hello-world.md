@@ -28,7 +28,7 @@ The first is that socially determined courses can self-discover their own local 
 
 The second is that collaborative authorship has better odds of filling in the course content gaps that get revealed along the way. With enough eyeballs, every barrier to student progress is shallow.
 
-In both cases, the platform approach moves the paradigm of course authorship from __design__ toward __growth__. Content beneficial to the overall progression of learners against the course's objectives is surfaced, and ineffective content is weeded out.
+In both cases, the platform approach moves the paradigm of course authorship from __design__ toward __growth__. Content that serves the course's overall objectives is surfaced, and ineffective content is weeded out.
 
 I'll have more to say about the mechanics of the system in future posts, including a few pedagogical considerations not mentioned in the Math Academy Way.
 
