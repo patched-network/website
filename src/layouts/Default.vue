@@ -20,8 +20,8 @@
           </g-link>
         </div>
         <nav class="nav">
-          <g-link class="nav__link" to="/blog/">Blog</g-link>
-          <g-link class="nav__link" to="/about/">About</g-link>
+          <g-link class="nav__link" to="/blog/">Archive</g-link>
+          <!-- <g-link class="nav__link" to="/about/">About</g-link> -->
           <a
             href="https://github.com/patched-network"
             target="_blank"
@@ -52,6 +52,7 @@
     <div class="layout">
       <slot />
     </div>
+    <footer></footer>
   </div>
 </template>
 
@@ -80,6 +81,18 @@ body {
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+footer {
+  background-color: var(--primary-color);
+  position: fixed;
+  bottom: 0;
+  color: #ffffff;
+  width: 100%;
+  min-height: 40px;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 14px;
 }
 
 .header {
