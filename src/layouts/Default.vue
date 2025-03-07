@@ -1,6 +1,7 @@
 <template>
   <div class="page-container">
     <header class="header">
+      <!-- Header content stays the same -->
       <div class="header-content">
         <div class="logo-container">
           <g-link class="logo" to="/">
@@ -28,17 +29,51 @@
     </div>
     <footer class="footer">
       <div class="footer-content">
-        <form class="subscribe-form" @submit.prevent="handleSubscribe">
-          <input
-            type="email"
-            placeholder="you@example.com"
-            class="email-input"
-            v-model="email"
-            required
-          />
-          <button type="submit" class="subscribe-button">
-            Subscribe for updates
-          </button>
+        <!-- Form with success/error messages -->
+        <form
+          name="subscribe"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="subscribe-form"
+          @submit.prevent="handleSubmit"
+        >
+          <!-- Honeypot field to prevent spam -->
+          <p class="hidden">
+            <label>Don't fill this out: <input name="bot-field" /></label>
+          </p>
+
+          <div class="form-container" v-if="!submitted">
+            <input
+              type="email"
+              name="email"
+              placeholder="you@example.com"
+              class="email-input"
+              v-model="email"
+              required
+              :disabled="submitting"
+            />
+            <!-- Hidden input for Netlify form handling -->
+            <input type="hidden" name="form-name" value="subscribe" />
+
+            <button
+              type="submit"
+              class="subscribe-button"
+              :disabled="submitting"
+            >
+              {{ submitting ? "Subscribing..." : "Subscribe for updates" }}
+            </button>
+          </div>
+
+          <!-- Success message -->
+          <div v-if="submitted" class="success-message">
+            Thanks for subscribing! We'll be in touch soon.
+          </div>
+
+          <!-- Error message -->
+          <div v-if="error" class="error-message">
+            {{ error }}
+          </div>
         </form>
       </div>
     </footer>
@@ -57,15 +92,44 @@ export default {
   data() {
     return {
       email: "",
+      submitted: false,
+      submitting: false,
+      error: null,
     };
   },
   methods: {
-    handleSubscribe() {
-      // Handle the subscription logic here
-      console.log("Subscription requested for:", this.email);
-      // Reset the field after submission
-      this.email = "";
-      // You would typically send this to your backend or newsletter service
+    async handleSubmit(e) {
+      this.submitting = true;
+      this.error = null;
+
+      const formData = new FormData();
+      formData.append("form-name", "subscribe");
+      formData.append("email", this.email);
+
+      try {
+        const response = await fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(formData).toString(),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Form submission failed: ${response.status}`);
+        }
+
+        this.submitted = true;
+        this.email = "";
+
+        // Reset the success message after a delay if you want
+        setTimeout(() => {
+          this.submitted = false;
+        }, 5000);
+      } catch (error) {
+        console.error("Form submission error:", error);
+        this.error = "Something went wrong. Please try again later.";
+      }
+
+      this.submitting = false;
     },
   },
 };
@@ -243,6 +307,44 @@ body {
     margin-right: 0;
     margin-bottom: 10px;
     width: 100%;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 4px;
+  padding: 10px 15px;
+  text-align: center;
+  width: 100%;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-top: 10px;
+  text-align: center;
+  width: 100%;
+}
+
+.form-container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Add responsive adjustments for the messages */
+@media (max-width: 768px) {
+  .success-message,
+  .error-message {
+    margin-bottom: 10px;
   }
 }
 
