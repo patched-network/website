@@ -4,25 +4,13 @@
       <div class="header-content">
         <div class="logo-container">
           <g-link class="logo" to="/">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 640 512"
-              height="25"
-              fill="currentColor"
-              class="logo-icon"
-            >
-              <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-              <path
-                d="M320 32c-8.1 0-16.1 1.4-23.7 4.1L15.8 137.4C6.3 140.9 0 149.9 0 160s6.3 19.1 15.8 22.6l57.9 20.9C57.3 229.3 48 259.8 48 291.9l0 28.1c0 28.4-10.8 57.7-22.3 80.8c-6.5 13-13.9 25.8-22.5 37.6C0 442.7-.9 448.3 .9 453.4s6 8.9 11.2 10.2l64 16c4.2 1.1 8.7 .3 12.4-2s6.3-6.1 7.1-10.4c8.6-42.8 4.3-81.2-2.1-108.7C90.3 344.3 86 329.8 80 316.5l0-24.6c0-30.2 10.2-58.7 27.9-81.5c12.9-15.5 29.6-28 49.2-35.7l157-61.7c8.2-3.2 17.5 .8 20.7 9s-.8 17.5-9 20.7l-157 61.7c-12.4 4.9-23.3 12.4-32.2 21.6l159.6 57.6c7.6 2.7 15.6 4.1 23.7 4.1s16.1-1.4 23.7-4.1L624.2 182.6c9.5-3.4 15.8-12.5 15.8-22.6s-6.3-19.1-15.8-22.6L343.7 36.1C336.1 33.4 328.1 32 320 32zM128 408c0 35.3 86 72 192 72s192-36.7 192-72L496.7 262.6 354.5 314c-11.1 4-22.8 6-34.5 6s-23.5-2-34.5-6L143.3 262.6 128 408z"
-              />
-            </svg>
+            <GraduationCapIcon class="logo-icon" height="25" />
             <span class="logo-text">{{ $static.metadata.siteName }}</span>
           </g-link>
         </div>
         <nav class="nav">
           <g-link class="nav__link" to="/contact/">Contact</g-link>
           <g-link class="nav__link" to="/blog/">Archive</g-link>
-          <!-- <g-link class="nav__link" to="/about/">About</g-link> -->
           <a
             href="https://github.com/patched-network"
             target="_blank"
@@ -30,22 +18,7 @@
             class="nav__link"
             aria-label="GitHub profile"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="github-icon"
-            >
-              <path
-                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
-              ></path>
-            </svg>
+            <GithubIcon class="github-icon" width="18" height="18" />
           </a>
         </nav>
       </div>
@@ -56,6 +29,18 @@
   </div>
 </template>
 
+<script>
+import GraduationCapIcon from "../components/grad-cap.vue";
+import GithubIcon from "../components/gh-icon.vue";
+
+export default {
+  components: {
+    GraduationCapIcon,
+    GithubIcon,
+  },
+};
+</script>
+
 <static-query>
 query {
   metadata {
@@ -63,6 +48,8 @@ query {
   }
 }
 </static-query>
+
+<!-- CSS remains the same -->
 
 <style>
 @import "../assets/styles.css";
