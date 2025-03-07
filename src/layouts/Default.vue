@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-container">
     <header class="header">
       <div class="header-content">
         <div class="logo-container">
@@ -26,6 +26,22 @@
     <div class="layout">
       <slot />
     </div>
+    <footer class="footer">
+      <div class="footer-content">
+        <form class="subscribe-form" @submit.prevent="handleSubscribe">
+          <input
+            type="email"
+            placeholder="you@example.com"
+            class="email-input"
+            v-model="email"
+            required
+          />
+          <button type="submit" class="subscribe-button">
+            Subscribe for updates
+          </button>
+        </form>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -38,6 +54,20 @@ export default {
     GraduationCapIcon,
     GithubIcon,
   },
+  data() {
+    return {
+      email: "",
+    };
+  },
+  methods: {
+    handleSubscribe() {
+      // Handle the subscription logic here
+      console.log("Subscription requested for:", this.email);
+      // Reset the field after submission
+      this.email = "";
+      // You would typically send this to your backend or newsletter service
+    },
+  },
 };
 </script>
 
@@ -49,8 +79,6 @@ query {
 }
 </static-query>
 
-<!-- CSS remains the same -->
-
 <style>
 @import "../assets/styles.css";
 @import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap");
@@ -61,6 +89,13 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.5;
+  min-height: 100vh;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .layout {
@@ -68,6 +103,8 @@ body {
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
+  flex: 1;
+  padding-bottom: 60px; /* Space for footer */
 }
 
 .header {
@@ -124,6 +161,56 @@ body {
   white-space: nowrap;
 }
 
+.footer {
+  background-color: var(--primary-color);
+  position: fixed;
+  bottom: 0;
+  padding: 15px 0;
+  width: 100%;
+  color: #ffffff;
+}
+
+.footer-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.subscribe-form {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.email-input {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  margin-right: 10px;
+  font-size: 16px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.subscribe-button {
+  padding: 10px 15px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-family: "Comfortaa", cursive;
+}
+
+.subscribe-button:hover {
+  background-color: #f0f0f0;
+}
+
 /* Media query for mobile responsiveness */
 @media (max-width: 768px) {
   .header-content {
@@ -135,6 +222,9 @@ body {
   .logo-container {
     margin-bottom: 15px;
   }
+  .layout {
+    padding-bottom: 120px;
+  }
 
   .nav {
     justify-content: center;
@@ -142,6 +232,17 @@ body {
 
   .nav__link:first-child {
     margin-left: 0;
+  }
+
+  .subscribe-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .email-input {
+    margin-right: 0;
+    margin-bottom: 10px;
+    width: 100%;
   }
 }
 
