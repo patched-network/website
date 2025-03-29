@@ -13,6 +13,8 @@ but...
 
 I'm happy to report that the big ball of mud has been separated into several smaller balls of mud, some of which are taking on vague semblances of their intended forms.
 
+Not quite castles, but a charitable eye can make out some spires.
+
 ## Why ?
 
 In software, a ball-of-mud is a program whose components are tightly intertwined with one another. This project ended up that way because of its history as a long-running personal side project.
@@ -28,6 +30,7 @@ The [monorepo](https://github.com/patched-network/vue-skuilder) now has a number
 - `common` - some core logic and shared standards for communication between different packages and system services
 - `common-ui` - implementations of UI components, including the main learner's loop
 - `db` - all things persistance. Course content, user data, etc.
+- `courses` - abstract base classes and components to be extended into general course materials.
 
 The boundaries between these packages provide decently clean lines for abstraction and the creation of different implementations for different purposes. In particular, the existing `db` implementation is based on a relationship between `pouchdb` in the browser and `couchdb` on the server, but shortly I'll add a side-by-side implementation for statically built courses and browser-local user data storage.
 
@@ -38,8 +41,12 @@ Most exciting is the brand new `standalone-ui` package, which is the templating 
 The project scaffolding CLI is the major immediate focus.
 
 Combining the CLI with the local-first + static site database implementation, I hope over the next couple of weeks to have both:
-- a CLI tool that developers can play with
-- enough built tooling to start pushing out some demo applications for everyone to play with
+- a CLI tool that _developers_ can play with
+- capacity to start pushing out some demo applications that _everyone_ can play with
+
+Looking forward to exposing the project in a way that can garner real feedback.
+
+Bricks are just mud and a little sunlight, right?
 
 ## Say Hello
 
