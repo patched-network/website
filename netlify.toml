@@ -1,0 +1,21 @@
+[build]
+  command = "yarn run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+  YARN_VERSION = "1.22.22"
+
+[[redirects]]
+  from = "/skuilder/*"
+  to = "/vue-skuilder/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/vue-skuilder/*"
+  to = "https://patched-network.github.io/vue-skuilder/:splat"
+  status = 200
+  force = true
+
+[context.production]
+  command = "yarn run build"
