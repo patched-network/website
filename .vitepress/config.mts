@@ -78,10 +78,32 @@ export default defineConfig({
     ],
   ],
   async buildEnd(config: SiteConfig) {
-    await writeRss(config);
-    writeLlms(config);
+    for (const [f, body] of Object.entries(await feedFiles())) writeFileSync(path.join(config.outDir, f), body);
+  },
+  // `buildEnd` only runs on build; serve the same generated files from the dev server.
+  vite: {
+    plugins: [
+      {
+        name: 'pn-feed-files',
+        configureServer(server) {
+          server.middlewares.use(async (req, res, next) => {
+            const f = decodeURIComponent((req.url ?? '').split('?')[0]).replace(/^\//, '');
+            if (!/^(rss\.xml|llms(-full)?\.txt|blog\/[^/]+\.md)$/.test(f)) return next();
+            const body = (await feedFiles())[f];
+            if (body === undefined) return next();
+            res.setHeader('Content-Type', f.endsWith('.xml') ? 'application/rss+xml; charset=utf-8' : 'text/markdown; charset=utf-8');
+            res.end(body);
+          });
+        },
+      },
+    ],
   },
 });
+
+/** Generated non-page files, keyed by path under outDir. */
+async function feedFiles(): Promise<Record<string, string>> {
+  return { 'rss.xml': await rssXml(), ...llmsFiles() };
+}
 
 // createContentLoader reports source paths, not rewritten ones: /blog/x(.html) -> /blog/x/
 export const postUrl = (u: string) => u.replace(/(\.html)?$/, '').replace(/\/?$/, '/');
@@ -91,7 +113,7 @@ export const postUrl = (u: string) => u.replace(/(\.html)?$/, '').replace(/\/?$/
 const esc = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-async function writeRss(config: SiteConfig) {
+async function rssXml(): Promise<string> {
   const posts = (
     await createContentLoader('blog/*.md', { render: true, excerpt: false }).load()
   )
@@ -111,7 +133,7 @@ async function writeRss(config: SiteConfig) {
     })
     .join('\n');
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>patched.network</title>
@@ -122,7 +144,6 @@ ${items}
   </channel>
 </rss>
 `;
-  writeFileSync(path.join(config.outDir, 'rss.xml'), xml);
 }
 
 // ---- llms.txt (https://llmstxt.org) ----------------------------------------
@@ -167,9 +188,10 @@ function excerpt(md: string, max = 180): string {
   return text.length > max ? text.slice(0, max).replace(/\s+\S*$/, '') + '…' : text;
 }
 
-function writeLlms(config: SiteConfig) {
+function llmsFiles(): Record<string, string> {
   const posts = rawPosts();
-  const out = (f: string, s: string) => writeFileSync(path.join(config.outDir, f), s);
+  const files: Record<string, string> = {};
+  const out = (f: string, s: string) => (files[f] = s);
 
   for (const p of posts) out(`blog/${p.slug}.md`, `# ${p.title}\n\n_${p.date}_\n\n${p.body}\n`);
 
@@ -206,4 +228,5 @@ ${posts.map((p) => `- [${p.title}](${SITE}/blog/${p.slug}.md): ${p.date}. ${exce
     'llms-full.txt',
     index + posts.map((p) => `\n---\n\n# ${p.title}\n\n_${p.date}_\n\n${p.body}\n`).join(''),
   );
+  return files;
 }
