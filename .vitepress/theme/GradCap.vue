@@ -2,7 +2,7 @@
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 640 512"
-    :height="height"
+    aria-hidden="true"
     fill="currentColor"
   >
     <path
@@ -10,14 +10,3 @@
     />
   </svg>
 </template>
-
-<script>
-export default {
-  props: {
-    height: {
-      type: [Number, String],
-      default: 25,
-    },
-  },
-};
-</script>

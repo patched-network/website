@@ -1,0 +1,204 @@
+:root {
+  --brand: #ff6a54; /* fills, marks, rules — not body text on light bg (2.8:1) */
+  --brand-text: #c93f2b; /* links / accent text on light bg (5:1) */
+  --on-brand: #2b1410; /* text on a coral fill (6:1) */
+  --bg: #fffdfc;
+  --surface: #ffffff;
+  --surface-2: #fff4f1;
+  --text: #1d1a18;
+  --muted: #6b6460;
+  --border: #ece4e0;
+  --shadow: 0 1px 2px rgb(40 20 10 / 0.04), 0 4px 16px rgb(40 20 10 / 0.05);
+
+  --font-display: 'Comfortaa', ui-rounded, system-ui, sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --measure: 42rem;
+  --wide: 60rem;
+  --gutter: 1.25rem;
+  color-scheme: light;
+}
+
+/* Dark: follows the OS unless the toggle pinned a choice (data-theme on <html>). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --brand-text: #ff8a77;
+    --bg: #16130f;
+    --surface: #1e1a17;
+    --surface-2: #2a1f1b;
+    --text: #ede7e3;
+    --muted: #a39a94;
+    --border: #332b27;
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --brand-text: #ff8a77;
+  --bg: #16130f;
+  --surface: #1e1a17;
+  --surface-2: #2a1f1b;
+  --text: #ede7e3;
+  --muted: #a39a94;
+  --border: #332b27;
+  --shadow: none;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--brand-text);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--brand) 35%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+.container.narrow {
+  max-width: var(--measure);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* ---- long-form prose (posts, landing body) ---- */
+
+.prose h1 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem;
+}
+.prose h2 {
+  font-size: 1.4rem;
+  margin: 2.5rem 0 0.75rem;
+}
+.prose h3 {
+  font-size: 1.15rem;
+  margin: 2rem 0 0.5rem;
+}
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 1.1rem;
+}
+.prose li + li {
+  margin-top: 0.3rem;
+}
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.prose blockquote {
+  margin: 1.5rem 0;
+  padding: 0.25rem 1rem;
+  border-left: 3px solid var(--brand);
+  color: var(--muted);
+}
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--surface-2);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+.prose div[class*='language-'] {
+  position: relative;
+  margin: 1.25rem 0;
+  border-radius: 8px;
+  background: var(--surface-2);
+  overflow-x: auto;
+}
+.prose div[class*='language-'] > span.lang,
+.prose div[class*='language-'] > button.copy {
+  display: none;
+}
+.prose pre {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.prose pre code {
+  display: block;
+  width: fit-content;
+  min-width: 100%;
+}
+/* shiki dual themes */
+.prose .shiki span {
+  color: var(--shiki-light);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .prose .shiki span {
+    color: var(--shiki-dark);
+  }
+}
+:root[data-theme='dark'] .prose .shiki span {
+  color: var(--shiki-dark);
+}
+.prose table {
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+.prose th,
+.prose td {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.75rem;
+}
+.prose .header-anchor {
+  display: none;
+}
