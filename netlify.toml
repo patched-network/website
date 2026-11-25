@@ -3,8 +3,19 @@
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "22"
   YARN_VERSION = "1.22.22"
+
+# Retired Gridsome pages (archived posts still link to /contact).
+[[redirects]]
+  from = "/contact"
+  to = "https://github.com/patched-network"
+  status = 301
+
+[[redirects]]
+  from = "/about"
+  to = "/"
+  status = 301
 
 [[redirects]]
   from = "/skuilder/*"
@@ -19,3 +30,14 @@
 
 [context.production]
   command = "yarn run build"
+
+# llms.txt and the per-post markdown mirrors (written by buildEnd in .vitepress/config.mts)
+[[headers]]
+  for = "/llms*.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+
+[[headers]]
+  for = "/blog/*.md"
+  [headers.values]
+    Content-Type = "text/markdown; charset=utf-8"

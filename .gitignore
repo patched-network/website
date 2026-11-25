@@ -6,3 +6,9 @@ node_modules
 dist
 .env
 .env.*
+
+# Local Netlify folder
+.netlify
+
+# VitePress
+.vitepress/cache
